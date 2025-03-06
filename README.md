@@ -1,1 +1,1 @@
-# versionning-comparator
+# semantic-versioning
