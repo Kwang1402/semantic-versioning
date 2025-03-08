@@ -5,11 +5,6 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class SemanticVersion implements Comparable<SemanticVersion> {
-    private List<Integer> versionParts;
-    public SemanticVersion(List<Integer> versionParts) {
-        this.versionParts = versionParts;    
-    }
-
     private static boolean validateSemanticVersionRawValue(String rawValue) {
         if(rawValue == null || rawValue.isEmpty()) {
             return false;
@@ -34,7 +29,7 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
 
         return true;
     }
-    
+
     public static SemanticVersion parse(String rawValue) {
         if(!validateSemanticVersionRawValue(rawValue)) {
             throw new IllegalArgumentException("Invalid Semantic Version value");
@@ -47,6 +42,10 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
         return new SemanticVersion(versionParts);
     }
 
+    private List<Integer> versionParts;
+    public SemanticVersion(List<Integer> versionParts) {
+        this.versionParts = versionParts;    
+    }
 
     @Override
     public int compareTo(SemanticVersion other) {
@@ -55,9 +54,14 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
             int thisPart = (i < this.versionParts.size()) ? this.versionParts.get(i) : 0;
             int otherPart = (i < other.versionParts.size()) ? other.versionParts.get(i) : 0;
             if(thisPart != otherPart) {
-                Integer.compare(thisPart, otherPart);
+                return Integer.compare(thisPart, otherPart);
             }
         }
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return versionParts.stream().map(String::valueOf).collect(Collectors.joining("."));
     }
 }
